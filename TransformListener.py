@@ -10,13 +10,15 @@ class TransformListener(gramListener):
         '<->': "EQ"
     }
 
+    def __init__(self):
+        self.stack = []
+
     # stack functions
 
     def pop(self):
         return self.stack.pop()
 
     def append(self, value):
-        # print "appending"+value.toStr()
         self.stack.append(value)
 
     def getFormula(self):

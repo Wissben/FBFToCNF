@@ -55,9 +55,14 @@ class Formula:
     def Not(formula):
         return Formula("NOT", formula)
 
+    @staticmethod
+    def restart():
+        Formula.idfCount = 0
+        Formula.idfs = {}
+
     def getClauses(self):
         self.convertToAO()
-        clauses = self.convert()
+        clauses = self.__convert()
         toRemove = []
         for i in range(0, len(clauses)):
             end = False
@@ -142,19 +147,19 @@ class Formula:
 
 # Convert functions:
 
-    def convert(self):
+    def __convert(self):
         func = getattr(self, "convert"+self.__type)
         return func()
 
     def convertAND(self):
-        clauses1 = self.getP().convert()
-        clauses2 = self.getQ().convert()
+        clauses1 = self.getP().__convert()
+        clauses2 = self.getQ().__convert()
         return clauses1 + clauses2
 
     def convertOR(self):
         result = []
-        clauses1 = self.getP().convert()
-        clauses2 = self.getQ().convert()
+        clauses1 = self.getP().__convert()
+        clauses2 = self.getQ().__convert()
         for clause1 in clauses1:
             for clause2 in clauses2:
                 clauses = clause2 + clause1
@@ -167,11 +172,11 @@ class Formula:
         if p.isLiteral(): # case literal we return not literal
             return [[self]]
         elif p.getType() == "NOT": # case not not p we return p
-            return p.getP().convert()
+            return p.getP().__convert()
         elif p.getType() == "OR": # case or we return (not p ^ not q)
-            return Formula("AND", Formula.Not(p.getP()), Formula.Not(p.getQ())).convert()
+            return Formula("AND", Formula.Not(p.getP()), Formula.Not(p.getQ())).__convert()
         else: # case and we return (not p v not q)
-            return Formula("OR", Formula.Not(p.getP()), Formula.Not(p.getQ())).convert()
+            return Formula("OR", Formula.Not(p.getP()), Formula.Not(p.getQ())).__convert()
 
     # return clause containing only the literal
     def convertL(self):
