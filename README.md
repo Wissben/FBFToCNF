@@ -7,8 +7,8 @@ using ANTLR4 as parser
 
 main.py file contains sample code that uses different transformation implemented.
 
-a- eliminating implication and equivalence.
+a- eliminate implication and equivalence.
 
-b- generating disjunctive clauses.
+b- generate disjunctive clauses.
 
 c- generate DIMACS file.
