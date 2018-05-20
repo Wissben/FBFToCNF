@@ -88,15 +88,11 @@ class Formula:
             for rem in toRemove:
                 clauses[i].remove(rem)
 
-        # eliminate clause1 in clause2
-        toRemove = []
-        for i in range(0, len(clauses)):
-
-
+        def allFound(clause,clauses):
             for j in range(0, len(clauses)):
-                if i != j:
+                if clause != clauses[j]:
                     allFound = True
-                    for literal1 in clauses[i]:
+                    for literal1 in clause:
                         found = False
                         for literal2 in clauses[j]:
                             if literal1.toStr() == literal2.toStr():
@@ -105,13 +101,18 @@ class Formula:
                         if not found:
                             allFound = False
                             break
-                    if allFound:
-                        toRemove.append(clauses[i])
-                        break
+                    if allFound and len(clauses[j]) == len(clause):
+                        return True
+            return False
 
-        for rem in toRemove:
-            clauses.remove(rem)
-
+        removed = True
+        while removed:
+            removed = False
+            for i in range(0, len(clauses)):
+                if allFound(clauses[i],clauses):
+                    clauses.remove(clauses[i])
+                    removed = True
+                    break
         return clauses
 
     def isComplement(self,literal):
@@ -122,6 +123,13 @@ class Formula:
         return this == notLiteral or lit == notThis
 
 # toStr functions
+
+    def __str__(self):
+        return self.toStr()
+
+    def __repr__(self):
+        return self.__str__()
+
 
     def toStr(self):
         func = getattr(self, "toStr" + self.__type)

@@ -3,7 +3,7 @@ WHITESPACE : (' '|'\n'|'\t') -> skip ;
 OP : '(';
 CP : ')';
 IMP : '->';
-AND : '^';
+AND : '^'|'&';
 OR : 'v';
 EQ : '<->';
 NOT : '-';

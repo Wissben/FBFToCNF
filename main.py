@@ -18,3 +18,4 @@ print dimacs
 file = open("out.cnf", "w")
 file.write(dimacs)
 file.close()
+
